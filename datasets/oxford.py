@@ -72,7 +72,7 @@ class OxfordDataset(Dataset):
             # key:{'query':file,'positives':[files],'negatives:[files], 'neighbors':[keys]}
             queries = pickle.load(handle)
 
-        # Convert to bitarray
+        # Convert to bitarray  正负样本列表被转换为 bitarray 格式以提高内存效率
         for ndx in tqdm.tqdm(queries):
             queries[ndx]['positives'] = set(queries[ndx]['positives'])
             queries[ndx]['negatives'] = set(queries[ndx]['negatives'])
@@ -102,6 +102,16 @@ class OxfordDataset(Dataset):
             query_pc = torch.nn.functional.pad(query_pc, (0, 0, 0, padlen), "constant", 0)
         elif padlen < 0:
             query_pc = query_pc[:self.n_points]
+
+        # 调试：检查正负样本
+        if ndx < 10:  # 只检查前10个样本
+            # positives = self.get_positives_ndx(ndx)
+            # negatives = self.get_negatives_ndx(ndx)
+            # print(f"#####Sample {ndx}: {len(positives)} positives, {len(negatives)} negatives")
+            positives_list = list(self.get_positives_ndx(ndx))
+            negatives_list = list(self.get_negatives_ndx(ndx))
+            print(f"Sample {ndx}: {len(positives_list)} positives, {len(negatives_list)} negatives")
+
         return query_pc, ndx
 
     def get_item_by_filename(self, filename):
@@ -455,8 +465,8 @@ class RemoveRandomBlock:
 
 
 if __name__ == '__main__':
-    dataset_path = '/media/sf_Datasets/PointNetVLAD'
-    query_filename = 'tum_test_queries_frame_5m_baseline.pickle'
+    dataset_path = '/home/wzj/pan2/Chilean_Underground_Mine_Dataset_Many_Times'
+    query_filename = 'training_queries_chilean_period.pickle'
 
     my_dataset = OxfordDataset()
 
