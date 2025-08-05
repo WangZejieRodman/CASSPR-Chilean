@@ -2,7 +2,7 @@
 backbone = MinkFPN
 pooling = GeM
 version = MinkLoc3D-S
-mink_quantization_size = 0.01, 0.01, 0.01
+mink_quantization_size = 0.02, 0.02, 0.02
 planes = 32,64,64
 layers = 1,1,1
 num_top_down = 1
@@ -16,7 +16,7 @@ with_pntnet = False
 pnt2s = True
 
 [SELF-ATTENTION]
-with_self_att = True
+with_self_att = False
 num_layers = 3
 linear_att = False
 kernel_size = 3
@@ -25,7 +25,7 @@ dilation = 1
 num_heads = 8
 
 [POINTNET-CROSS-ATTENTION]
-with_cross_att = True
+with_cross_att = False
 pnt2s = True
 num_heads = 2
 d_feedforward = 64
